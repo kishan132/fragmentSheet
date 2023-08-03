@@ -1,19 +1,23 @@
-package me.kishankumar.test
+package me.kishankumar.test.fragments
 
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import me.kishankumar.test.R
 import me.kishankumar.test.databinding.FragmentFirstBinding
+import me.kishankumar.test.viewmodel.SharedViewModel
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FourthFragment : Fragment() {
+class ThirdFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
 
@@ -38,19 +42,34 @@ class FourthFragment : Fragment() {
 
         val reqHeight = requireContext().resources.displayMetrics.heightPixels * 0.25
         binding.root.layoutParams.height = reqHeight.toInt()
-        binding.root.setBackgroundColor(Color.RED)
-        binding.textviewSecond.apply {
-            text = "welcome to Screen"
-            textSize = 28F
-        }
-        sharedViewModel.updateData(4)
+        binding.root.setBackgroundColor(Color.BLUE)
+        binding.textviewSecond.text = "This is third frag"
+        sharedViewModel.updateData(3)
 
-        binding.buttonSecond.visibility = View.GONE
+        binding.buttonSecond.setOnClickListener {
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.add(R.id.frag_container, FourthFragment())
+            transaction.addToBackStack(this.tag)
+            transaction.commit()
+        }
+
+        sharedViewModel.getSharedData().observe(viewLifecycleOwner, Observer { value ->
+            Log.d("chealth", "onViewCreated: third $value")
+
+            when (value) {
+                //1->binding.root.layoutParams.height = reqHeight.toInt()
+                //2->binding.root.layoutParams.height = reqHeight.toInt()
+                3 -> binding.root.layoutParams.height = reqHeight.toInt()
+                4 -> binding.root.layoutParams.height = 2 * reqHeight.toInt()
+                else -> binding.root.layoutParams.height = reqHeight.toInt()
+            }
+
+        })
 
     }
 
-    /*override fun onDestroyView() {
+    override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }*/
+    }
 }

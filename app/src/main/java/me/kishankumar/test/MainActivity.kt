@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.ui.AppBarConfiguration
 import me.kishankumar.test.databinding.ActivityMainBinding
+import me.kishankumar.test.fragments.FirstFragment
+import me.kishankumar.test.viewmodel.SharedViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,12 +35,9 @@ class MainActivity : AppCompatActivity() {
             view.visibility = View.GONE
 
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.add(R.id.container, FirstFragment())
+            transaction.add(R.id.frag_container, FirstFragment())
             transaction.addToBackStack(null)
             transaction.commit()
-
-            /*val firstFragment = FirstFragment()
-            firstFragment.show(supportFragmentManager,firstFragment.tag)*/
         }
     }
 
